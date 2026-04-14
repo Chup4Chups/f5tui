@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "name": "pool_web",
+      "partition": "Common",
+      "fullPath": "/Common/pool_web",
+      "monitor": "/Common/http",
+      "loadBalancingMode": "round-robin",
+      "activeMemberCount": 3
+    },
+    {
+      "name": "pool_api",
+      "partition": "Common",
+      "fullPath": "/Common/pool_api",
+      "monitor": "/Common/https",
+      "loadBalancingMode": "least-connections-member",
+      "activeMemberCount": 2
+    },
+    {
+      "name": "pool_legacy",
+      "partition": "Tenant_A",
+      "fullPath": "/Tenant_A/pool_legacy",
+      "monitor": "/Common/tcp",
+      "loadBalancingMode": "round-robin",
+      "activeMemberCount": 1
+    }
+  ]
+}

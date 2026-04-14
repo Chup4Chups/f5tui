@@ -1,0 +1,21 @@
+# Binaries
+/f5tui
+/bin/
+*.exe
+*.test
+*.out
+
+# Go build cache / module cache (only matters if repo is under GOPATH)
+/vendor/
+
+# Local config (may contain credentials)
+config.yaml
+config.local.yaml
+*.local.yaml
+.env
+
+# Editors
+.idea/
+.vscode/
+*.swp
+.DS_Store

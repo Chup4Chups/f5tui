@@ -1,0 +1,7 @@
+{
+  "items": [
+    {"name": "10.10.0.1:80", "address": "10.10.0.1", "state": "up", "session": "monitor-enabled"},
+    {"name": "10.10.0.2:80", "address": "10.10.0.2", "state": "up", "session": "monitor-enabled"},
+    {"name": "10.10.0.3:80", "address": "10.10.0.3", "state": "down", "session": "user-disabled"}
+  ]
+}

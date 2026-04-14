@@ -1,0 +1,7 @@
+# Copy to ~/.config/f5tui/config.yaml (or pass with --config).
+# CLI flags override values set here.
+host: https://bigip.example.com
+user: admin
+pass: changeme
+insecure: true
+partition: Common

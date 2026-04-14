@@ -1,0 +1,25 @@
+{
+  "items": [
+    {
+      "name": "policy_host_routing",
+      "partition": "Common",
+      "fullPath": "/Common/policy_host_routing",
+      "status": "published",
+      "strategy": "/Common/first-match"
+    },
+    {
+      "name": "policy_api_rewrite",
+      "partition": "Common",
+      "fullPath": "/Common/policy_api_rewrite",
+      "status": "draft",
+      "strategy": "/Common/best-match"
+    },
+    {
+      "name": "policy_geo_block",
+      "partition": "Tenant_A",
+      "fullPath": "/Tenant_A/policy_geo_block",
+      "status": "published",
+      "strategy": "/Common/first-match"
+    }
+  ]
+}

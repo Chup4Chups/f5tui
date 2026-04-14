@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "id": "abc123",
+      "name": "asm_web_policy",
+      "partition": "Common",
+      "enforcementMode": "blocking",
+      "active": true,
+      "virtualServers": ["/Common/vs_web_https"]
+    },
+    {
+      "id": "def456",
+      "name": "asm_api_policy",
+      "partition": "Common",
+      "enforcementMode": "transparent",
+      "active": true,
+      "virtualServers": ["/Common/vs_api"]
+    },
+    {
+      "id": "ghi789",
+      "name": "asm_legacy_policy",
+      "partition": "Tenant_A",
+      "enforcementMode": "blocking",
+      "active": false,
+      "virtualServers": []
+    }
+  ]
+}

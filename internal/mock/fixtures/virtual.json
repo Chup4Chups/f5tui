@@ -1,0 +1,40 @@
+{
+  "items": [
+    {
+      "name": "vs_web_http",
+      "partition": "Common",
+      "fullPath": "/Common/vs_web_http",
+      "destination": "/Common/10.0.0.10:80",
+      "ipProtocol": "tcp",
+      "pool": "/Common/pool_web",
+      "enabled": "true"
+    },
+    {
+      "name": "vs_web_https",
+      "partition": "Common",
+      "fullPath": "/Common/vs_web_https",
+      "destination": "/Common/10.0.0.10:443",
+      "ipProtocol": "tcp",
+      "pool": "/Common/pool_web",
+      "enabled": "true"
+    },
+    {
+      "name": "vs_api",
+      "partition": "Common",
+      "fullPath": "/Common/vs_api",
+      "destination": "/Common/10.0.0.20:443",
+      "ipProtocol": "tcp",
+      "pool": "/Common/pool_api",
+      "disabled": "true"
+    },
+    {
+      "name": "vs_legacy",
+      "partition": "Tenant_A",
+      "fullPath": "/Tenant_A/vs_legacy",
+      "destination": "/Tenant_A/10.1.0.5:8080",
+      "ipProtocol": "tcp",
+      "pool": "/Tenant_A/pool_legacy",
+      "enabled": "true"
+    }
+  ]
+}
