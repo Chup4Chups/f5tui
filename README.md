@@ -26,6 +26,24 @@ iControl REST API over HTTPS with basic auth.
 
 ## Install
 
+### From a release (no Go toolchain required)
+
+Grab the archive for your OS and architecture from the
+[Releases page](https://github.com/Chup4Chups/f5tui/releases), extract it,
+and run the `f5tui` binary. Example for Linux amd64:
+
+```bash
+VERSION=0.1.0
+curl -fsSL -o f5tui.tar.gz \
+  https://github.com/Chup4Chups/f5tui/releases/download/v${VERSION}/f5tui_${VERSION}_linux_amd64.tar.gz
+tar -xzf f5tui.tar.gz f5tui
+./f5tui --mock
+```
+
+Checksums are published as `checksums.txt` on each release.
+
+### From source
+
 Requires Go 1.22 or later.
 
 ```bash
