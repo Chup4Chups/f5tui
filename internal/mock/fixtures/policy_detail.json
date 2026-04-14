@@ -1,0 +1,98 @@
+{
+  "/Common/policy_host_routing": {
+    "name": "policy_host_routing",
+    "partition": "Common",
+    "fullPath": "/Common/policy_host_routing",
+    "status": "published",
+    "strategy": "/Common/first-match",
+    "description": "Route requests to pools by HTTP Host header",
+    "rulesReference": {
+      "items": [
+        {
+          "name": "rule_api",
+          "ordinal": 0,
+          "description": "Send api.example.com to API pool",
+          "conditionsReference": {
+            "items": [
+              {"name": "0", "httpHost": true, "equals": true, "request": true, "values": ["api.example.com"]}
+            ]
+          },
+          "actionsReference": {
+            "items": [
+              {"name": "0", "forward": true, "request": true, "pool": "/Common/pool_api"}
+            ]
+          }
+        },
+        {
+          "name": "rule_web",
+          "ordinal": 1,
+          "description": "Default to web pool",
+          "conditionsReference": {
+            "items": [
+              {"name": "0", "httpUri": true, "startsWith": true, "request": true, "values": ["/"]}
+            ]
+          },
+          "actionsReference": {
+            "items": [
+              {"name": "0", "forward": true, "request": true, "pool": "/Common/pool_web"}
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "/Common/policy_api_rewrite": {
+    "name": "policy_api_rewrite",
+    "partition": "Common",
+    "fullPath": "/Common/policy_api_rewrite",
+    "status": "draft",
+    "strategy": "/Common/best-match",
+    "description": "Rewrite legacy /v1 requests to /v2",
+    "rulesReference": {
+      "items": [
+        {
+          "name": "rule_rewrite_v1",
+          "ordinal": 0,
+          "description": "Rewrite /v1/ to /v2/",
+          "conditionsReference": {
+            "items": [
+              {"name": "0", "httpUri": true, "startsWith": true, "request": true, "values": ["/v1/"]}
+            ]
+          },
+          "actionsReference": {
+            "items": [
+              {"name": "0", "httpUri": true, "replace": true, "request": true, "value": "/v2/"}
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "/Tenant_A/policy_geo_block": {
+    "name": "policy_geo_block",
+    "partition": "Tenant_A",
+    "fullPath": "/Tenant_A/policy_geo_block",
+    "status": "published",
+    "strategy": "/Common/first-match",
+    "description": "Block non-EU source countries",
+    "rulesReference": {
+      "items": [
+        {
+          "name": "rule_block_non_eu",
+          "ordinal": 0,
+          "description": "Reject if geoip country not in EU",
+          "conditionsReference": {
+            "items": [
+              {"name": "0", "geoip": true, "not": true, "equals": true, "request": true, "values": ["FR", "DE", "LU", "NL", "BE"]}
+            ]
+          },
+          "actionsReference": {
+            "items": [
+              {"name": "0", "reset": true, "request": true}
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

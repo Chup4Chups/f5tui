@@ -1,0 +1,13 @@
+{
+  "abc123": [
+    {"name": "username",   "type": "explicit", "level": "global", "valueType": "user-input",    "performStaging": false},
+    {"name": "password",   "type": "explicit", "level": "global", "valueType": "user-input",    "performStaging": false},
+    {"name": "csrf_token", "type": "explicit", "level": "global", "valueType": "dynamic-content", "performStaging": false},
+    {"name": "*",          "type": "wildcard", "level": "global", "valueType": "ignore",        "performStaging": true}
+  ],
+  "def456": [
+    {"name": "id",    "type": "explicit", "level": "url",    "valueType": "user-input",     "performStaging": true},
+    {"name": "token", "type": "explicit", "level": "global", "valueType": "dynamic-content", "performStaging": true}
+  ],
+  "ghi789": []
+}

@@ -45,7 +45,7 @@ func (a *App) virtualServersView() tview.Primitive {
 		if !v.Enabled {
 			status = "[red]disabled[-]"
 		}
-		t.SetCell(row, 0, tview.NewTableCell(v.Name).SetExpansion(1))
+		t.SetCell(row, 0, tview.NewTableCell(v.Name).SetExpansion(1).SetReference(v.FullPath))
 		t.SetCell(row, 1, tview.NewTableCell(v.Partition).SetExpansion(1))
 		t.SetCell(row, 2, tview.NewTableCell(v.Destination).SetExpansion(2))
 		t.SetCell(row, 3, tview.NewTableCell(v.IPProtocol).SetExpansion(1))
@@ -54,7 +54,12 @@ func (a *App) virtualServersView() tview.Primitive {
 		row++
 		shown++
 	}
-	t.SetTitle(fmt.Sprintf(" virtual servers (%d/%d) ", shown, len(items)))
+	t.SetTitle(fmt.Sprintf(" virtual servers (%d/%d) — enter for details ", shown, len(items)))
+	t.SetSelectedFunc(func(r, _ int) {
+		if fp, ok := t.GetCell(r, 0).GetReference().(string); ok && fp != "" {
+			a.pushVirtualServer(fp)
+		}
+	})
 	return t
 }
 
@@ -81,45 +86,12 @@ func (a *App) poolsView() tview.Primitive {
 		row++
 		shown++
 	}
-	t.SetTitle(fmt.Sprintf(" pools (%d/%d) — enter for members ", shown, len(items)))
+	t.SetTitle(fmt.Sprintf(" pools (%d/%d) — enter for details ", shown, len(items)))
 	t.SetSelectedFunc(func(r, _ int) {
-		cell := t.GetCell(r, 0)
-		ref, _ := cell.GetReference().(string)
-		if ref == "" {
-			return
+		if fp, ok := t.GetCell(r, 0).GetReference().(string); ok && fp != "" {
+			a.pushPool(fp)
 		}
-		a.push("pool_members:"+ref, func() tview.Primitive { return a.poolMembersView(ref) })
 	})
-	return t
-}
-
-func (a *App) poolMembersView(fullPath string) tview.Primitive {
-	items, err := a.client.PoolMembers(fullPath)
-	if err != nil {
-		return errorView("pool members", err)
-	}
-	t := newTable("", []string{"NAME", "ADDRESS", "STATE", "SESSION"})
-	row := 1
-	shown := 0
-	for _, m := range items {
-		if !a.matchFilter(m.Name, m.Address, m.State) {
-			continue
-		}
-		state := m.State
-		switch state {
-		case "up":
-			state = "[green]up[-]"
-		case "down":
-			state = "[red]down[-]"
-		}
-		t.SetCell(row, 0, tview.NewTableCell(m.Name).SetExpansion(1))
-		t.SetCell(row, 1, tview.NewTableCell(m.Address).SetExpansion(1))
-		t.SetCell(row, 2, tview.NewTableCell(state).SetExpansion(1))
-		t.SetCell(row, 3, tview.NewTableCell(m.Session).SetExpansion(1))
-		row++
-		shown++
-	}
-	t.SetTitle(fmt.Sprintf(" members of %s (%d/%d) ", strings.TrimPrefix(fullPath, "/"), shown, len(items)))
 	return t
 }
 
@@ -145,14 +117,19 @@ func (a *App) ltmPoliciesView() tview.Primitive {
 		case "draft":
 			status = "[yellow]draft[-]"
 		}
-		t.SetCell(row, 0, tview.NewTableCell(p.Name).SetExpansion(1))
+		t.SetCell(row, 0, tview.NewTableCell(p.Name).SetExpansion(1).SetReference(p.FullPath))
 		t.SetCell(row, 1, tview.NewTableCell(p.Partition).SetExpansion(1))
 		t.SetCell(row, 2, tview.NewTableCell(status).SetExpansion(1))
 		t.SetCell(row, 3, tview.NewTableCell(p.Strategy).SetExpansion(1))
 		row++
 		shown++
 	}
-	t.SetTitle(fmt.Sprintf(" LTM policies (%d/%d) ", shown, len(items)))
+	t.SetTitle(fmt.Sprintf(" LTM policies (%d/%d) — enter for rules ", shown, len(items)))
+	t.SetSelectedFunc(func(r, _ int) {
+		if fp, ok := t.GetCell(r, 0).GetReference().(string); ok && fp != "" {
+			a.pushLTMPolicy(fp)
+		}
+	})
 	return t
 }
 
@@ -186,7 +163,7 @@ func (a *App) asmPoliciesView() tview.Primitive {
 		if vs == "" {
 			vs = "-"
 		}
-		t.SetCell(row, 0, tview.NewTableCell(p.Name).SetExpansion(1))
+		t.SetCell(row, 0, tview.NewTableCell(p.Name).SetExpansion(1).SetReference(p.ID))
 		t.SetCell(row, 1, tview.NewTableCell(p.Partition).SetExpansion(1))
 		t.SetCell(row, 2, tview.NewTableCell(enforce).SetExpansion(1))
 		t.SetCell(row, 3, tview.NewTableCell(active).SetExpansion(1))
@@ -194,6 +171,11 @@ func (a *App) asmPoliciesView() tview.Primitive {
 		row++
 		shown++
 	}
-	t.SetTitle(fmt.Sprintf(" ASM policies (%d/%d) ", shown, len(items)))
+	t.SetTitle(fmt.Sprintf(" ASM policies (%d/%d) — enter for details ", shown, len(items)))
+	t.SetSelectedFunc(func(r, _ int) {
+		if id, ok := t.GetCell(r, 0).GetReference().(string); ok && id != "" {
+			a.pushASMPolicy(id)
+		}
+	})
 	return t
 }

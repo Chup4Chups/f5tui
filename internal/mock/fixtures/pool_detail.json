@@ -1,0 +1,41 @@
+{
+  "/Common/pool_web": {
+    "name": "pool_web",
+    "partition": "Common",
+    "fullPath": "/Common/pool_web",
+    "monitor": "/Common/http",
+    "loadBalancingMode": "round-robin",
+    "activeMemberCount": 3,
+    "description": "Front-end web pool",
+    "members": [
+      {"name": "10.10.0.1:80", "address": "10.10.0.1", "state": "up",   "session": "monitor-enabled"},
+      {"name": "10.10.0.2:80", "address": "10.10.0.2", "state": "up",   "session": "monitor-enabled"},
+      {"name": "10.10.0.3:80", "address": "10.10.0.3", "state": "down", "session": "user-disabled"}
+    ]
+  },
+  "/Common/pool_api": {
+    "name": "pool_api",
+    "partition": "Common",
+    "fullPath": "/Common/pool_api",
+    "monitor": "/Common/https",
+    "loadBalancingMode": "least-connections-member",
+    "activeMemberCount": 2,
+    "description": "Internal API backend",
+    "members": [
+      {"name": "10.20.0.1:8443", "address": "10.20.0.1", "state": "up", "session": "monitor-enabled"},
+      {"name": "10.20.0.2:8443", "address": "10.20.0.2", "state": "up", "session": "monitor-enabled"}
+    ]
+  },
+  "/Tenant_A/pool_legacy": {
+    "name": "pool_legacy",
+    "partition": "Tenant_A",
+    "fullPath": "/Tenant_A/pool_legacy",
+    "monitor": "/Common/tcp",
+    "loadBalancingMode": "round-robin",
+    "activeMemberCount": 1,
+    "description": "Single legacy box",
+    "members": [
+      {"name": "10.30.0.1:8080", "address": "10.30.0.1", "state": "up", "session": "monitor-enabled"}
+    ]
+  }
+}

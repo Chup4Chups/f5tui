@@ -157,6 +157,7 @@ func (a *App) runCommand(cmd string) {
 func (a *App) push(name string, builder func() tview.Primitive) {
 	a.stack = append(a.stack, frame{name: name, builder: builder})
 	a.render()
+	a.updateStatus("")
 }
 
 func (a *App) refresh() {
@@ -177,6 +178,7 @@ func (a *App) back() {
 		a.pages.RemovePage(top.name)
 	}
 	a.render()
+	a.updateStatus("")
 }
 
 func (a *App) render() {
@@ -201,8 +203,15 @@ func (a *App) updateStatus(extra string) {
 	if filt == "" {
 		filt = "-"
 	}
-	line := fmt.Sprintf(" [yellow]part[-]:%s  [yellow]filter[-]:%s  [yellow]:[-]cmd [yellow]/[-]filter [yellow]?[-]help [yellow]esc[-]back [yellow]:q[-]quit ",
-		part, filt)
+	crumb := "-"
+	if len(a.stack) > 0 {
+		crumb = a.stack[len(a.stack)-1].name
+		if len(a.stack) > 1 {
+			crumb = fmt.Sprintf("%s [grey](d%d)[-]", crumb, len(a.stack))
+		}
+	}
+	line := fmt.Sprintf(" [yellow]view[-]:%s  [yellow]part[-]:%s  [yellow]filter[-]:%s  [yellow]:[-]cmd [yellow]/[-]filter [yellow]?[-]help [yellow]esc[-]back [yellow]:q[-]quit ",
+		crumb, part, filt)
 	if extra != "" {
 		line = " [red]" + extra + "[-]  " + line
 	}

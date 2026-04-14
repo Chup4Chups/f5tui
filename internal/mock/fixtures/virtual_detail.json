@@ -1,0 +1,101 @@
+{
+  "/Common/vs_web_http": {
+    "name": "vs_web_http",
+    "partition": "Common",
+    "fullPath": "/Common/vs_web_http",
+    "destination": "/Common/10.0.0.10:80",
+    "ipProtocol": "tcp",
+    "pool": "/Common/pool_web",
+    "enabled": "true",
+    "source": "0.0.0.0/0",
+    "snat": "automap",
+    "description": "HTTP landing page, redirects to HTTPS",
+    "rules": ["/Common/_sys_https_redirect"],
+    "profilesReference": {
+      "items": [
+        {"name": "tcp", "partition": "Common", "fullPath": "/Common/tcp", "context": "all"},
+        {"name": "http", "partition": "Common", "fullPath": "/Common/http", "context": "all"}
+      ]
+    },
+    "policiesReference": {
+      "items": [
+        {"name": "policy_host_routing", "partition": "Common", "fullPath": "/Common/policy_host_routing"}
+      ]
+    }
+  },
+  "/Common/vs_web_https": {
+    "name": "vs_web_https",
+    "partition": "Common",
+    "fullPath": "/Common/vs_web_https",
+    "destination": "/Common/10.0.0.10:443",
+    "ipProtocol": "tcp",
+    "pool": "/Common/pool_web",
+    "enabled": "true",
+    "source": "0.0.0.0/0",
+    "snat": "automap",
+    "description": "Public HTTPS entrypoint with WAF",
+    "rules": [],
+    "profilesReference": {
+      "items": [
+        {"name": "tcp", "partition": "Common", "fullPath": "/Common/tcp", "context": "all"},
+        {"name": "http", "partition": "Common", "fullPath": "/Common/http", "context": "all"},
+        {"name": "clientssl", "partition": "Common", "fullPath": "/Common/clientssl", "context": "clientside"},
+        {"name": "websecurity", "partition": "Common", "fullPath": "/Common/websecurity", "context": "all"}
+      ]
+    },
+    "policiesReference": {
+      "items": [
+        {"name": "policy_host_routing", "partition": "Common", "fullPath": "/Common/policy_host_routing"}
+      ]
+    }
+  },
+  "/Common/vs_api": {
+    "name": "vs_api",
+    "partition": "Common",
+    "fullPath": "/Common/vs_api",
+    "destination": "/Common/10.0.0.20:443",
+    "ipProtocol": "tcp",
+    "pool": "/Common/pool_api",
+    "disabled": "true",
+    "source": "10.0.0.0/8",
+    "snat": "none",
+    "description": "Internal API, currently disabled for maintenance",
+    "rules": ["/Common/_sys_APM_Office365_SAML_BasicAuth"],
+    "profilesReference": {
+      "items": [
+        {"name": "tcp", "partition": "Common", "fullPath": "/Common/tcp", "context": "all"},
+        {"name": "http", "partition": "Common", "fullPath": "/Common/http", "context": "all"},
+        {"name": "clientssl", "partition": "Common", "fullPath": "/Common/clientssl", "context": "clientside"},
+        {"name": "websecurity", "partition": "Common", "fullPath": "/Common/websecurity", "context": "all"}
+      ]
+    },
+    "policiesReference": {
+      "items": [
+        {"name": "policy_api_rewrite", "partition": "Common", "fullPath": "/Common/policy_api_rewrite"}
+      ]
+    }
+  },
+  "/Tenant_A/vs_legacy": {
+    "name": "vs_legacy",
+    "partition": "Tenant_A",
+    "fullPath": "/Tenant_A/vs_legacy",
+    "destination": "/Tenant_A/10.1.0.5:8080",
+    "ipProtocol": "tcp",
+    "pool": "/Tenant_A/pool_legacy",
+    "enabled": "true",
+    "source": "0.0.0.0/0",
+    "snat": "/Tenant_A/snat_legacy",
+    "description": "Legacy tenant app",
+    "rules": [],
+    "profilesReference": {
+      "items": [
+        {"name": "tcp", "partition": "Common", "fullPath": "/Common/tcp", "context": "all"}
+      ]
+    },
+    "policiesReference": {
+      "items": [
+        {"name": "policy_geo_block", "partition": "Tenant_A", "fullPath": "/Tenant_A/policy_geo_block"}
+      ]
+    }
+  }
+}

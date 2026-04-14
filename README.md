@@ -12,7 +12,12 @@ iControl REST API over HTTPS with basic auth.
 ## Features
 
 - Browse Virtual Servers, Pools, LTM Policies, ASM Policies from a single TUI
-- Drill from a pool into its members
+- **Multi-level drill-in**: press `enter` on any row for a full details view
+  - **Virtual Server** → linked pool, profiles, LTM policies, attached ASM policies, iRules (each jumps to its own details)
+  - **Pool** → summary + members list
+  - **LTM Policy** → rules, each with its conditions + actions (forward-to-pool actions jump into the pool)
+  - **ASM Policy** → summary + signature sets + URLs and parameters sub-collections
+- Breadcrumb in the status bar so you always know where you are
 - Filter rows with `/` (substring match, case-insensitive)
 - Switch partition on the fly with `:part <name>` (or `:part *` for all)
 - YAML config file so you don't have to type credentials on the command line
@@ -86,8 +91,8 @@ passed with `--config /path/to/file.yaml`.
 | `:`              | Open the command bar                      |
 | `/`              | Filter rows in the current view           |
 | `?`              | Show the help screen                      |
-| `esc`            | Go back / clear filter input              |
-| `enter`          | Drill into selection (pools → members)    |
+| `esc`            | Go back one level / clear filter input    |
+| `enter`          | Drill into the highlighted row            |
 | `:vs`            | Virtual Servers view                      |
 | `:pools`         | Pools view                                |
 | `:policies`      | LTM Policies view                         |

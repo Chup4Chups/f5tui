@@ -1,0 +1,55 @@
+{
+  "abc123": {
+    "id": "abc123",
+    "name": "asm_web_policy",
+    "partition": "Common",
+    "enforcementMode": "blocking",
+    "active": true,
+    "virtualServers": ["/Common/vs_web_https"],
+    "description": "Public web WAF policy",
+    "applicationLanguage": "utf-8",
+    "caseInsensitive": false,
+    "enablePassiveMode": false,
+    "protocolIndependent": false,
+    "signatureStaging": true,
+    "learningMode": "manual",
+    "signatureSets": [
+      {"name": "Generic Detection Signatures", "alarm": true, "block": true},
+      {"name": "OWA Signatures",                 "alarm": true, "block": false}
+    ]
+  },
+  "def456": {
+    "id": "def456",
+    "name": "asm_api_policy",
+    "partition": "Common",
+    "enforcementMode": "transparent",
+    "active": true,
+    "virtualServers": ["/Common/vs_api"],
+    "description": "API WAF — transparent for now",
+    "applicationLanguage": "utf-8",
+    "caseInsensitive": true,
+    "enablePassiveMode": true,
+    "protocolIndependent": true,
+    "signatureStaging": true,
+    "learningMode": "automatic",
+    "signatureSets": [
+      {"name": "Generic Detection Signatures", "alarm": true, "block": false}
+    ]
+  },
+  "ghi789": {
+    "id": "ghi789",
+    "name": "asm_legacy_policy",
+    "partition": "Tenant_A",
+    "enforcementMode": "blocking",
+    "active": false,
+    "virtualServers": [],
+    "description": "Legacy policy — unattached",
+    "applicationLanguage": "utf-8",
+    "caseInsensitive": false,
+    "enablePassiveMode": false,
+    "protocolIndependent": false,
+    "signatureStaging": false,
+    "learningMode": "disabled",
+    "signatureSets": []
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "abc123": [
+    {"name": "/",          "protocol": "https", "method": "GET",  "type": "explicit",  "performStaging": false},
+    {"name": "/login",     "protocol": "https", "method": "POST", "type": "explicit",  "performStaging": false},
+    {"name": "/api/*",     "protocol": "https", "method": "*",    "type": "wildcard",  "performStaging": true},
+    {"name": "/static/*",  "protocol": "https", "method": "GET",  "type": "wildcard",  "performStaging": false}
+  ],
+  "def456": [
+    {"name": "/v2/users",  "protocol": "https", "method": "GET",  "type": "explicit",  "performStaging": true},
+    {"name": "/v2/orders", "protocol": "https", "method": "POST", "type": "explicit",  "performStaging": true}
+  ],
+  "ghi789": []
+}
